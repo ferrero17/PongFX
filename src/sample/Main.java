@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -29,6 +30,8 @@ public class Main extends Application {
 
     int ballCenterY = 30;
     int ballCurrentSpeedY = 3;
+
+    int stickCurrentSpeed =0;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -60,6 +63,9 @@ public class Main extends Application {
                 circleBall.setCenterY(ballCenterY);
                 ballCenterY+= ballCurrentSpeedY;
 
+                stickPosY += stickCurrentSpeed;
+                rectStick.setY(stickPosY);
+
 
                 if (ballCenterX >= SCENE_TAM_X){
                     ballCurrentSpeedX = -3;
@@ -80,6 +86,34 @@ public class Main extends Application {
         };
 
         animationBall.start();
+
+
+
+        scene.setOnKeyPressed(event -> {
+
+
+            switch (event.getCode()){
+
+                case UP:
+                    //pulsada tecla 'arriba'
+                    stickCurrentSpeed = -6;
+                    break;
+
+                case DOWN:
+                //pulsada tecla abajo
+                    stickCurrentSpeed = 6;
+                    break;
+
+            }
+
+        });
+
+        scene.setOnKeyReleased(event -> {
+                stickCurrentSpeed = 0;
+        });
+
+
+
     }
 
 
