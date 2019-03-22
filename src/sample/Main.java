@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -57,6 +58,14 @@ public class Main extends Application {
             @Override
             public void handle(long now) {
 
+
+                Shape shapeColision = Shape.intersect(circleBall,rectStick);
+
+                boolean colisionVacia = shapeColision.getBoundsInLocal().isEmpty();
+                if (colisionVacia == false){
+                    ballCurrentSpeedX = -3;
+                }
+
                 circleBall.setCenterX(ballCenterX);
                 ballCenterX+= ballCurrentSpeedX;
 
@@ -64,6 +73,17 @@ public class Main extends Application {
                 ballCenterY+= ballCurrentSpeedY;
 
                 stickPosY += stickCurrentSpeed;
+
+                if (stickPosY < 0){
+                    stickPosY = 0;
+
+                }else {
+                    if (stickPosY > SCENE_TAM_Y){
+
+                        stickPosY = SCENE_TAM_Y - STICK_HEIGHT;
+                    }
+                }
+
                 rectStick.setY(stickPosY);
 
 
