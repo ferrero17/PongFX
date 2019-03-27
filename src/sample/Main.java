@@ -5,16 +5,21 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -23,6 +28,7 @@ public class Main extends Application {
     final int SCENE_TAM_Y = 400;
     final int STICK_WIDTH = 7;
     final int STICK_HEIGHT = 50;
+    final int TEXT_SIZE = 24; //Medida de la fuente del texto
 
     int stickPosY = (SCENE_TAM_Y-STICK_HEIGHT) /2;
 
@@ -34,8 +40,17 @@ public class Main extends Application {
 
     int stickCurrentSpeed =0;
 
+    //Puntuación actual
+    int score;
+    //Puntuacion maxima
+    int highScore;
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
+
 
 
         Pane root = new Pane();
@@ -54,16 +69,72 @@ public class Main extends Application {
         root.getChildren().add(circleBall);
 
 
+        //LAYOUTS PARA MOSTRAR PUNTUACIONES
+
+        //Layout Principal
+        HBox paneScores = new HBox();
+        paneScores.setTranslateY(20);
+        paneScores.setMinWidth(SCENE_TAM_X);
+        paneScores.setAlignment(Pos.CENTER);
+        paneScores.setSpacing(100);
+        root.getChildren().add(paneScores);
+
+        //Layout para puntuación actual
+        HBox paneCurrentScore = new HBox();
+        paneCurrentScore.setSpacing(10);
+        paneScores.getChildren().add(paneCurrentScore);
+        //Layout para puntuación máxima, histórico
+        HBox paneHighScore = new HBox();
+        paneHighScore.setSpacing(10);
+        paneScores.getChildren().add(paneHighScore);
+        //Texto de etiqueta para la puntuación
+        Text texTitleScore = new Text("SCORE: ");
+        texTitleScore.setFont(Font.font(TEXT_SIZE));
+        texTitleScore.setFill(Color.WHITE);
+        //Texto para la puntuacion
+        Text textScore = new Text("0");
+        textScore.setFont(Font.font(TEXT_SIZE));
+        textScore.setFill(Color.WHITE);
+        //Texto de etiqueta para la puntuación máxima
+        Text textTitleHighScore = new Text("Max. Score: ");
+        textTitleHighScore.setFont(Font.font(TEXT_SIZE));
+        textTitleHighScore.setFill(Color.WHITE);
+        //Texto para la puntuación máxima
+        Text textHighScore = new Text("0");
+        textHighScore.setFont(Font.font(TEXT_SIZE));
+        textHighScore.setFill(Color.WHITE);
+        //Añadiendo los textos a los layouts reservados para ellos
+        paneCurrentScore.getChildren().add(texTitleScore);
+        paneCurrentScore.getChildren().add(textScore);
+        paneHighScore.getChildren().add(textTitleHighScore);
+        paneHighScore.getChildren().add(textHighScore);
+
+
+        //Creamos las línias divisorias del campo
+        for (int i = 0; i <SCENE_TAM_Y ; i+=30) {
+
+            Line line = new Line(SCENE_TAM_X/2,i,SCENE_TAM_X/2,i+10);
+            line.setStroke(Color.WHITE);
+            line.setStrokeWidth(4);
+            root.getChildren().add(line);
+        }
+
+
+        //Animaciñon-movimiento de la bola y el stick
         AnimationTimer animationBall = new AnimationTimer() {
             @Override
             public void handle(long now) {
 
-
                 Shape shapeColision = Shape.intersect(circleBall,rectStick);
 
                 boolean colisionVacia = shapeColision.getBoundsInLocal().isEmpty();
-                if (colisionVacia == false){
+
+                if (colisionVacia == false && ballCurrentSpeedX > 0){
                     ballCurrentSpeedX = -3;
+                    //Incrementamos la puntuacion
+                    score+=1;
+                    textScore.setText(String.valueOf(score));
+
                 }
 
                 circleBall.setCenterX(ballCenterX);
@@ -107,8 +178,6 @@ public class Main extends Application {
 
         animationBall.start();
 
-
-
         scene.setOnKeyPressed(event -> {
 
 
@@ -129,8 +198,10 @@ public class Main extends Application {
         });
 
         scene.setOnKeyReleased(event -> {
+            //al dejar de pulsar cualquiera de las dos teclas
                 stickCurrentSpeed = 0;
         });
+
 
 
 
