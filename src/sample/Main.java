@@ -22,6 +22,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 public class Main extends Application {
 
     final int SCENE_TAM_X = 600;
@@ -45,12 +47,26 @@ public class Main extends Application {
     //Puntuacion maxima
     int highScore;
 
+    Text textScore;
+
+
+    private void resetGame(){
+
+        score = 0;
+        textScore.setText(String.valueOf(score));
+        ballCenterX = 10;
+        ballCurrentSpeedY = 3;
+        //Posición random de la bola al inicio de cada partida
+        Random random = new Random();
+        ballCenterY = random.nextInt(SCENE_TAM_Y);
+
+    }
+
+
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-
-
 
 
         Pane root = new Pane();
@@ -92,7 +108,7 @@ public class Main extends Application {
         texTitleScore.setFont(Font.font(TEXT_SIZE));
         texTitleScore.setFill(Color.WHITE);
         //Texto para la puntuacion
-        Text textScore = new Text("0");
+        textScore = new Text("0");
         textScore.setFont(Font.font(TEXT_SIZE));
         textScore.setFill(Color.WHITE);
         //Texto de etiqueta para la puntuación máxima
@@ -119,7 +135,7 @@ public class Main extends Application {
             root.getChildren().add(line);
         }
 
-
+        resetGame();
         //Animaciñon-movimiento de la bola y el stick
         AnimationTimer animationBall = new AnimationTimer() {
             @Override
@@ -129,8 +145,10 @@ public class Main extends Application {
 
                 boolean colisionVacia = shapeColision.getBoundsInLocal().isEmpty();
 
+                //Cuando la bola impacte en el stick
                 if (colisionVacia == false && ballCurrentSpeedX > 0){
-                    ballCurrentSpeedX = -3;
+                    int collisionZone = getStickCollisionZone(circleBall,rectStick);
+                    calculateBallSpeed(collisionZone);
                     //Incrementamos la puntuacion
                     score+=1;
                     textScore.setText(String.valueOf(score));
@@ -157,10 +175,20 @@ public class Main extends Application {
 
                 rectStick.setY(stickPosY);
 
-
+                //Compruebo si la bola toca el lado derecho
                 if (ballCenterX >= SCENE_TAM_X){
-                    ballCurrentSpeedX = -3;
+                    //Compruebo si hay una nueva puntuacion mas alta
+                    if(score > highScore){
+                        //Actualizar nueva puntuación más alta
+                        highScore = score;
+                        textHighScore.setText(String.valueOf(highScore));
+
+                    }
+                    //Reinicia la partida si la bola toca el lado derecho
+                    resetGame();
                 }
+
+
 
                 if (ballCenterX <= 0){
                     ballCurrentSpeedX = 3;
@@ -205,8 +233,56 @@ public class Main extends Application {
 
 
 
+
     }
 
+    private int getStickCollisionZone(Circle ball, Rectangle stick){
+
+        if (Shape.intersect(ball,stick).getBoundsInLocal().isEmpty()){
+            return 0;
+        }else {
+            double offsetBallStick = ball.getCenterY()- stick.getY();
+            if (offsetBallStick < stick.getHeight() *0.1){
+                return 1;
+            }else if (offsetBallStick < stick.getHeight() / 2){
+                return 2;
+            } else if (offsetBallStick >= stick.getHeight() / 2 && offsetBallStick < stick.getHeight() * 0.9) {
+                return 3;
+            }else {
+                return 4;
+            }
+            }
+        }
+
+
+        private void calculateBallSpeed(int collisionZone){
+
+        switch (collisionZone){
+            case 0:
+                //No hay colisión
+                break;
+            case 1:
+                //Colision con esquina superior
+                ballCurrentSpeedX = -3;
+                ballCurrentSpeedY = -6;
+                break;
+            case 2:
+                //Colision con lado superior
+                ballCurrentSpeedX = -3;
+                ballCurrentSpeedY = -3;
+                break;
+            case 3:
+                //colision con lado inferior
+                ballCurrentSpeedX = -3;
+                ballCurrentSpeedY = 3;
+            case 4:
+                //Colision con esquina inferior
+                ballCurrentSpeedX = -3;
+                ballCurrentSpeedY = 6;
+                break;
+
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
