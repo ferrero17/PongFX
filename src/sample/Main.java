@@ -35,10 +35,10 @@ public class Main extends Application {
     int stickPosY = (SCENE_TAM_Y-STICK_HEIGHT) /2;
 
     int ballCenterX = 10;
-    int ballCurrentSpeedX = 3;
+    double ballCurrentSpeedX = 3;
 
     int ballCenterY = 30;
-    int ballCurrentSpeedY = 3;
+    double ballCurrentSpeedY = 3;
 
     int stickCurrentSpeed =0;
 
@@ -48,6 +48,7 @@ public class Main extends Application {
     int highScore;
 
     Text textScore;
+    Text levelScore;
 
 
     private void resetGame(){
@@ -92,6 +93,29 @@ public class Main extends Application {
         paneScores.setSpacing(100);
         root.getChildren().add(paneScores);
 
+        //INDICADOR DEL NIVEL
+        HBox lvlScore = new HBox();
+        lvlScore.setTranslateY(SCENE_TAM_Y - 50);
+        lvlScore.setTranslateX(SCENE_TAM_X - 575);
+        lvlScore.setMinWidth(SCENE_TAM_X);
+        lvlScore.setAlignment(Pos.BOTTOM_LEFT);
+        lvlScore.setSpacing(100);
+        root.getChildren().add(lvlScore);
+        //
+        HBox currentLevel = new HBox();
+        currentLevel.setSpacing(10);
+        lvlScore.getChildren().add(currentLevel);
+        //
+        Text textLvl = new Text("LVL: ");
+        textLvl.setFont(Font.font(TEXT_SIZE));
+        textLvl.setFill(Color.WHITE);
+        //
+        levelScore = new Text("1");
+        levelScore.setFont(Font.font(TEXT_SIZE));
+        levelScore.setFill(Color.WHITE);
+
+        ///////////////////////
+
         //Layout para puntuación actual
         HBox paneCurrentScore = new HBox();
         paneCurrentScore.setSpacing(10);
@@ -122,6 +146,11 @@ public class Main extends Application {
         paneHighScore.getChildren().add(textTitleHighScore);
         paneHighScore.getChildren().add(textHighScore);
 
+        //
+        currentLevel.getChildren().add(textLvl);
+        currentLevel.getChildren().add(levelScore);
+
+
 
         //Creamos las línias divisorias del campo
         for (int i = 0; i <SCENE_TAM_Y ; i+=30) {
@@ -151,6 +180,9 @@ public class Main extends Application {
                     textScore.setText(String.valueOf(score));
 
                 }
+
+
+                levelScore.setText(String.valueOf((score/5)+1));
 
                 circleBall.setCenterX(ballCenterX);
                 ballCenterX+= ballCurrentSpeedX;
@@ -218,12 +250,12 @@ public class Main extends Application {
 
                 case UP:
                     //pulsada tecla 'arriba'
-                    stickCurrentSpeed = -6;
+                    stickCurrentSpeed = -8;
                     break;
 
                 case DOWN:
                 //pulsada tecla 'abajo'
-                    stickCurrentSpeed = 6;
+                    stickCurrentSpeed = 8;
                     break;
 
             }
@@ -293,23 +325,23 @@ public class Main extends Application {
 
 
         if (score > 5){
-            ballCurrentSpeedX *= 2;
-            ballCurrentSpeedY *= 2;
+            ballCurrentSpeedX *= 1.3;
+            ballCurrentSpeedY *= 1.3;
         }
 
             if (score > 10 && score <= 15){
-                ballCurrentSpeedX *= 3;
-                ballCurrentSpeedY *= 3;
+                ballCurrentSpeedX *= 1.5;
+                ballCurrentSpeedY *= 1.5;
             }
 
             if (score > 15 && score <= 20){
-                ballCurrentSpeedX *= 4;
-                ballCurrentSpeedY *= 4;
+                ballCurrentSpeedX *= 1.7;
+                ballCurrentSpeedY *= 1.7;
             }
 
             if (score > 20 && score <= 25){
-                ballCurrentSpeedX *= 5;
-                ballCurrentSpeedY *= 5;
+                ballCurrentSpeedX *= 1.9;
+                ballCurrentSpeedY *= 1.9;
             }
 
 
