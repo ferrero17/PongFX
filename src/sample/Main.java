@@ -249,6 +249,7 @@ public class Main extends Application {
             }else {
                 return 4;
             }
+
             }
         }
 
@@ -262,51 +263,52 @@ public class Main extends Application {
 
             case 1:
                 //Colision con esquina superior
-                if (score <= 5){
                     ballCurrentSpeedX = -3;
                     ballCurrentSpeedY = -6;
-                }
-                if (score > 5){
-                    ballCurrentSpeedX = -5;
-                    ballCurrentSpeedY = -8;
-                }
                 break;
 
             case 2:
                 //Colision con lado superior
-                if (score <= 5) {
                     ballCurrentSpeedX = -3;
                     ballCurrentSpeedY = -3;
-                }
-                if (score > 5){
-                    ballCurrentSpeedX = -5;
-                    ballCurrentSpeedY = -5;
-                }
                 break;
+
             case 3:
                 //colision con lado inferior
-                if (score <= 5) {
                     ballCurrentSpeedX = -3;
                     ballCurrentSpeedY = 3;
-                }
-                if (score > 5){
-                    ballCurrentSpeedX = -5;
-                    ballCurrentSpeedY = 5;
-                }
                 break;
+
             case 4:
                 //Colision con esquina inferior
-                if (score <= 5) {
                     ballCurrentSpeedX = -3;
                     ballCurrentSpeedY = 6;
-                }
-                if (score > 5){
-                    ballCurrentSpeedX = -5;
-                    ballCurrentSpeedY = 8;
-                }
                 break;
 
         }
+
+
+        if (score > 5){
+            ballCurrentSpeedX *= 2;
+            ballCurrentSpeedY *= 2;
+        }
+
+            if (score > 10 && score <= 15){
+                ballCurrentSpeedX *= 3;
+                ballCurrentSpeedY *= 3;
+            }
+
+            if (score > 15 && score <= 20){
+                ballCurrentSpeedX *= 4;
+                ballCurrentSpeedY *= 4;
+            }
+
+            if (score > 20 && score <= 25){
+                ballCurrentSpeedX *= 5;
+                ballCurrentSpeedY *= 5;
+            }
+
+
     }
 
     public static void main(String[] args) {
