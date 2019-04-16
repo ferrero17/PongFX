@@ -63,14 +63,10 @@ public class Main extends Application {
     }
 
 
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
         Pane root = new Pane();
-
         Scene scene = new Scene(root, SCENE_TAM_X, SCENE_TAM_Y, Color.BLACK);
 
         primaryStage.setTitle("PONG-FX");
@@ -188,15 +184,20 @@ public class Main extends Application {
                     resetGame();
                 }
 
+                //Se comprueba si la bola toca la izquierda de la pared o el techo
+                //Aquí habrá que modificar también que velocidad tomará segun el LVL de la partida --> TO-DO:
 
-
+                //Si la bola toca la pared IZQUIERDA
                 if (ballCenterX <= 0){
                     ballCurrentSpeedX = 3;
                 }
 
+                //Si la bola toca el borde SUPERIOR
                 if (ballCenterY >= SCENE_TAM_Y){
                     ballCurrentSpeedY = -3;
                 }
+
+                //Si la bola toca el borde INFERIOR
                 if (ballCenterY <= 0){
                     ballCurrentSpeedY = 3;
                 }
@@ -217,7 +218,7 @@ public class Main extends Application {
                     break;
 
                 case DOWN:
-                //pulsada tecla abajo
+                //pulsada tecla 'abajo'
                     stickCurrentSpeed = 6;
                     break;
 
@@ -229,9 +230,6 @@ public class Main extends Application {
             //al dejar de pulsar cualquiera de las dos teclas
                 stickCurrentSpeed = 0;
         });
-
-
-
 
 
     }
@@ -261,24 +259,51 @@ public class Main extends Application {
             case 0:
                 //No hay colisión
                 break;
+
             case 1:
                 //Colision con esquina superior
-                ballCurrentSpeedX = -3;
-                ballCurrentSpeedY = -6;
+                if (score <= 5){
+                    ballCurrentSpeedX = -3;
+                    ballCurrentSpeedY = -6;
+                }
+                if (score > 5){
+                    ballCurrentSpeedX = -5;
+                    ballCurrentSpeedY = -8;
+                }
                 break;
+
             case 2:
                 //Colision con lado superior
-                ballCurrentSpeedX = -3;
-                ballCurrentSpeedY = -3;
+                if (score <= 5) {
+                    ballCurrentSpeedX = -3;
+                    ballCurrentSpeedY = -3;
+                }
+                if (score > 5){
+                    ballCurrentSpeedX = -5;
+                    ballCurrentSpeedY = -5;
+                }
                 break;
             case 3:
                 //colision con lado inferior
-                ballCurrentSpeedX = -3;
-                ballCurrentSpeedY = 3;
+                if (score <= 5) {
+                    ballCurrentSpeedX = -3;
+                    ballCurrentSpeedY = 3;
+                }
+                if (score > 5){
+                    ballCurrentSpeedX = -5;
+                    ballCurrentSpeedY = 5;
+                }
+                break;
             case 4:
                 //Colision con esquina inferior
-                ballCurrentSpeedX = -3;
-                ballCurrentSpeedY = 6;
+                if (score <= 5) {
+                    ballCurrentSpeedX = -3;
+                    ballCurrentSpeedY = 6;
+                }
+                if (score > 5){
+                    ballCurrentSpeedX = -5;
+                    ballCurrentSpeedY = 8;
+                }
                 break;
 
         }
