@@ -56,6 +56,7 @@ public class Main extends Application {
         textScore.setText(String.valueOf(score));
         ballCenterX = 10;
         ballCurrentSpeedY = 3;
+        ballCurrentSpeedX = 3;
         //Posición random de la bola al inicio de cada partida
         Random random = new Random();
         ballCenterY = random.nextInt(SCENE_TAM_Y);
@@ -189,17 +190,20 @@ public class Main extends Application {
 
                 //Si la bola toca la pared IZQUIERDA
                 if (ballCenterX <= 0){
-                    ballCurrentSpeedX = 3;
+                    //ballCurrentSpeedX = 3;
+                    ballCurrentSpeedX *= -1;
                 }
 
                 //Si la bola toca el borde SUPERIOR
                 if (ballCenterY >= SCENE_TAM_Y){
-                    ballCurrentSpeedY = -3;
+                    //ballCurrentSpeedY = -3;
+                    ballCurrentSpeedY *= -1;
                 }
 
                 //Si la bola toca el borde INFERIOR
                 if (ballCenterY <= 0){
-                    ballCurrentSpeedY = 3;
+                    //ballCurrentSpeedY = 3;
+                    ballCurrentSpeedY *= -1;
                 }
 
             }
