@@ -26,20 +26,24 @@ import java.util.Random;
 
 public class Main extends Application {
 
+    //Constantes
     final int SCENE_TAM_X = 600;
     final int SCENE_TAM_Y = 400;
     final int STICK_WIDTH = 7;
     final int STICK_HEIGHT = 50;
     final int TEXT_SIZE = 24; //Medida de la fuente del texto
 
+    //Tamaño del stick
     int stickPosY = (SCENE_TAM_Y-STICK_HEIGHT) /2;
-
+   //Posicion X de la bola
     int ballCenterX = 10;
+    //Velocidad X Inicial de la bola
     double ballCurrentSpeedX = 3;
-
+    //Posicion Y de la bola
     int ballCenterY = 30;
+    //Velocidad Y Inicial de la bola
     double ballCurrentSpeedY = 3;
-
+    // Velocidad inicial del Stick
     int stickCurrentSpeed =0;
 
     //Puntuación actual
@@ -50,7 +54,7 @@ public class Main extends Application {
     Text textScore;
     Text levelScore;
 
-
+    // Mètodo para resetear el juego
     private void resetGame(){
 
         score = 0;
@@ -68,7 +72,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        //Se genera el escenario
         Pane root = new Pane();
+        //Se crea el escenario principal con las medidas que hemos declarado al principio
         Scene scene = new Scene(root, SCENE_TAM_X, SCENE_TAM_Y, Color.BLACK);
 
         primaryStage.setTitle("PONG-FX");
@@ -78,10 +84,10 @@ public class Main extends Application {
         Circle circleBall = new Circle(ballCenterX,ballCenterY,7,Color.WHITE);
         Rectangle rectStick = new Rectangle(SCENE_TAM_X*0.9,stickPosY,STICK_WIDTH,STICK_HEIGHT);
         rectStick.setFill(Color.WHITE);
+
         // Añadimos los elementos stick y ball al elemento root.
         root.getChildren().add(rectStick);
         root.getChildren().add(circleBall);
-
 
         //LAYOUTS PARA MOSTRAR PUNTUACIONES
 
@@ -162,6 +168,8 @@ public class Main extends Application {
         }
 
         resetGame();
+
+
         //Animaciñon-movimiento de la bola y el stick
         AnimationTimer animationBall = new AnimationTimer() {
             @Override
@@ -218,23 +226,20 @@ public class Main extends Application {
                 }
 
                 //Se comprueba si la bola toca la izquierda de la pared o el techo
-                //Aquí habrá que modificar también que velocidad tomará segun el LVL de la partida --> TO-DO:
+
 
                 //Si la bola toca la pared IZQUIERDA
                 if (ballCenterX <= 0){
-                    //ballCurrentSpeedX = 3;
                     ballCurrentSpeedX *= -1;
                 }
 
                 //Si la bola toca el borde SUPERIOR
                 if (ballCenterY >= SCENE_TAM_Y){
-                    //ballCurrentSpeedY = -3;
                     ballCurrentSpeedY *= -1;
                 }
 
                 //Si la bola toca el borde INFERIOR
                 if (ballCenterY <= 0){
-                    //ballCurrentSpeedY = 3;
                     ballCurrentSpeedY *= -1;
                 }
 
@@ -250,12 +255,12 @@ public class Main extends Application {
 
                 case UP:
                     //pulsada tecla 'arriba'
-                    stickCurrentSpeed = -8;
+                    stickCurrentSpeed = -10;
                     break;
 
                 case DOWN:
                 //pulsada tecla 'abajo'
-                    stickCurrentSpeed = 8;
+                    stickCurrentSpeed = 10;
                     break;
 
             }
@@ -323,7 +328,7 @@ public class Main extends Application {
 
         }
 
-
+        // Se comprueba
         if (score > 5){
             ballCurrentSpeedX *= 1.3;
             ballCurrentSpeedY *= 1.3;
